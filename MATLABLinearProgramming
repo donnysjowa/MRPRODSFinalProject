@@ -1,0 +1,34 @@
+% Define the optimization variables
+x1 = optimvar('x1', 'LowerBound', 0, 'UpperBound', Inf);
+x2 = optimvar('x2', 'LowerBound', 0, 'UpperBound', Inf);
+x3 = optimvar('x3', 'LowerBound', 0, 'UpperBound', Inf);
+x4 = optimvar('x4', 'LowerBound', 0, 'UpperBound', Inf);
+x5 = optimvar('x5', 'LowerBound', 0, 'UpperBound', Inf);
+x6 = optimvar('x6', 'LowerBound', 0, 'UpperBound', Inf);
+x7 = optimvar('x7', 'LowerBound', 0, 'UpperBound', Inf);
+
+% Optimization Problem Object
+prob = optimproblem('Objective', x1 + x2 + 1500*x3 + 900*x4 + 450*x5 + x6 + x7, 'ObjectiveSense', 'min');
+
+% Constraints
+prob.Constraints.c1 = x1 <= 480000; % Maximum monthly labor cost
+prob.Constraints.c2 = x2 >= 150000; % Maximum monthly marketing cost
+prob.Constraints.c3 = 1500*x3 <= 1125000; % unit production cost for A
+prob.Constraints.c4 = 900*x4 <= 405000; % unit production cost for B
+prob.Constraints.c5 = 450*x5 <= 243000; % unit production cost for C
+prob.Constraints.c6 = x6 <= 20000; % Maximum monthly logistics cost
+prob.Constraints.c7 = x7 <= 100000; % Maximum monthly utilities cost
+prob.Constraints.c8 = x1 + x7 >= 400000;
+prob.Constraints.c9 = x2 + x6 <= 160000;
+prob.Constraints.c10 = x3 >= 400; % Base Price for Unit Cost
+prob.Constraints.c11 = x4 >= 400; % Base Price for Unit Cost
+prob.Constraints.c12 = x5 >= 400; % Base Price for Unit Cost
+prob.Constraints.c13 = x3 + x4 + x5 >= 1370; % Total Price for 3 Unit Cost 
+prob.Constraints.c14 = 1300*x3 + 1200*x4 + 1500*x5 >= 1500000;
+prob.Constraints.c15 = x1 + x2 + x6 + x7 >= 577000;
+
+% Convert the problem to a problem structure
+problem = prob2struct(prob);
+
+% Solve the problem
+[sol, fval, exitflag, output] = solve(prob)  
